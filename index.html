@@ -61,8 +61,7 @@
       text-transform: none;
       letter-spacing: -0.04em;
       color: var(--text);
-      line-height: 1.1;
-      font-weight: 800;
+      line-height: 1.15;
     }
 
     .reveal .progress {
@@ -84,64 +83,63 @@
       background: transparent;
     }
 
-    /* ─── Mesh Background ─── */
-    .bg-mesh {
+
+    .aura {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-      overflow: hidden;
-      background: var(--bg);
-    }
-
-    .blob {
-      position: absolute;
       border-radius: 50%;
-      filter: blur(120px);
-      opacity: 0.25;
-      animation: move 20s infinite alternate cubic-bezier(0.45, 0, 0.55, 1);
+      filter: blur(90px);
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
     }
 
-    .blob-1 {
-      width: 600px;
-      height: 600px;
-      background: var(--primary);
-      top: -10%;
-      left: -10%;
+    .aura-tl {
+      width: 420px;
+      height: 420px;
+      background: var(--indigo);
+      top: -120px;
+      left: -120px;
     }
 
-    .blob-2 {
-      width: 500px;
-      height: 500px;
-      background: var(--secondary);
-      bottom: -10%;
-      right: -10%;
-      animation-delay: -5s;
+    .aura-br {
+      width: 380px;
+      height: 380px;
+      background: var(--cyan);
+      bottom: -100px;
+      right: -100px;
     }
 
-    .blob-3 {
-      width: 400px;
-      height: 400px;
-      background: var(--accent);
-      top: 40%;
-      left: 40%;
-      animation-delay: -10s;
+    .aura-mid {
+      width: 260px;
+      height: 260px;
+      background: var(--emerald);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      opacity: 0.08;
+    }
+
+    .aura-v {
+      width: 300px;
+      height: 300px;
+      background: var(--violet);
+      top: 20%;
+      right: 15%;
       opacity: 0.15;
     }
 
-    @keyframes move {
-      0% {
-        transform: translate(0, 0) scale(1);
-      }
-
-      100% {
-        transform: translate(100px, 50px) scale(1.1);
-      }
+    /* ─── Stars ─── */
+    .stars {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      z-index: 1;
+      overflow: hidden;
     }
 
-    /* ─── Stars ─── */
     .star {
       position: absolute;
       border-radius: 50%;
@@ -182,7 +180,7 @@
       font-size: 12px;
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: var(--primary);
+      color: var(--cyan);
       margin-bottom: 0.9rem;
     }
 
@@ -196,8 +194,8 @@
     }
 
     /* ─── Gradient text ─── */
-    .g-text {
-      background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    .g-indigo-cyan {
+      background: linear-gradient(135deg, var(--indigo) 0%, var(--cyan) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -205,27 +203,32 @@
 
     /* ─── Glass card ─── */
     .card {
-      padding: 2.2rem;
-      border-radius: 24px;
+      padding: 1.8rem 2rem;
+      border-radius: 16px;
       background: var(--glass-bg);
-      backdrop-filter: blur(40px);
-      -webkit-backdrop-filter: blur(40px);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
       border: 1px solid var(--glass-border);
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     .card h3 {
-      font-size: 1.25rem;
+      font-size: 1.1rem;
       font-weight: 700;
-      margin-bottom: 0.75rem;
-      color: var(--text);
+      margin-bottom: 0.65rem;
+      background: linear-gradient(135deg, var(--indigo), var(--cyan));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .card {
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s ease, box-shadow 0.3s ease;
     }
 
     .card:hover {
-      transform: translateY(-8px) scale(1.02);
-      border-color: rgba(255, 255, 255, 0.2);
-      background: rgba(15, 23, 42, 0.8);
-      box-shadow: 0 20px 40px -20px rgba(0, 0, 0, 0.5);
+      transform: translateY(-5px);
+      border-color: rgba(99, 102, 241, 0.4);
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
     }
 
     .card p {
@@ -307,21 +310,22 @@
       filter: brightness(1.2);
     }
 
-    .pill-primary {
-      border: 1px solid var(--primary);
-      color: var(--primary);
-    }
-
-    .pill-secondary {
+    .pill-indigo {
       background: rgba(99, 102, 241, 0.12);
-      color: var(--secondary);
+      color: var(--indigo);
       border: 1px solid rgba(99, 102, 241, 0.28);
     }
 
-    .pill-accent {
-      background: rgba(244, 63, 94, 0.12);
-      color: var(--accent);
-      border: 1px solid rgba(244, 63, 94, 0.28);
+    .pill-cyan {
+      background: rgba(6, 182, 212, 0.12);
+      color: var(--cyan);
+      border: 1px solid rgba(6, 182, 212, 0.28);
+    }
+
+    .pill-em {
+      background: rgba(16, 185, 129, 0.12);
+      color: var(--emerald);
+      border: 1px solid rgba(16, 185, 129, 0.28);
     }
 
     /* ─── Tech card ─── */
@@ -394,19 +398,19 @@
 
     /* ─── Hero title ─── */
     .hero-title {
-      font-size: clamp(5rem, 10vw, 9rem);
+      font-size: clamp(4.5rem, 9vw, 8rem);
       font-weight: 800;
       background: linear-gradient(135deg,
-          #ffffff 20%,
-          var(--primary) 60%,
-          var(--secondary) 100%);
+          #ffffff 10%,
+          var(--indigo) 50%,
+          var(--cyan) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      line-height: 0.9;
-      margin-bottom: 1.5rem;
-      letter-spacing: -0.06em;
-      filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.5));
+      line-height: 0.95;
+      margin-bottom: 1.2rem;
+      letter-spacing: -0.05em;
+      filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
     }
 
     /* ─── CTA button ─── */
@@ -423,7 +427,7 @@
           rgba(99, 102, 241, 0.2),
           rgba(6, 182, 212, 0.2));
       border: 1px solid rgba(99, 102, 241, 0.35);
-      color: var(--primary);
+      color: var(--cyan);
     }
 
     /* ─── Border accents ─── */
@@ -469,17 +473,17 @@
 </head>
 
 <body>
-  <!-- Mesh Background -->
-  <div class="bg-mesh">
-    <div class="blob blob-1"></div>
-    <div class="blob blob-2"></div>
-    <div class="blob blob-3"></div>
-  </div>
+  <!-- Aura blobs -->
+  <div class="aura aura-tl"></div>
+  <div class="aura aura-br"></div>
+  <div class="aura aura-mid"></div>
+  <div class="aura aura-v"></div>
+  <div class="stars" id="stars"></div>
 
   <div class="reveal">
     <div class="slides">
       <!-- ═══════════════ SLIDE 1 – Hero ═══════════════ -->
-      <section>
+      <section data-background-color="#0a0a1a">
         <div class="slide-inner" style="text-align: center">
           <div class="section-label" style="justify-content: center; margin-bottom: 1.5rem">
             Projet Web · 2026
@@ -500,19 +504,19 @@
                 justify-content: center;
                 flex-wrap: wrap;
               ">
-            <span class="pill pill-secondary">Gestion d'équipe</span>
-            <span class="pill pill-primary">Suivi Financier</span>
-            <span class="pill pill-accent">Laravel 12</span>
+            <span class="pill pill-indigo">Gestion d'équipe</span>
+            <span class="pill pill-cyan">Suivi Financier</span>
+            <span class="pill pill-em">Laravel 12</span>
           </div>
         </div>
       </section>
 
       <!-- ═══════════════ SLIDE 2 – Description ═══════════════ -->
-      <section>
+      <section data-background-color="#080d14">
         <div class="slide-inner">
           <div class="section-label">Description du Projet</div>
           <h2 style="font-size: 2.6rem; margin-bottom: 1rem">
-            Qu'est-ce qu'<span class="g-text">EasyColoc</span> ?
+            Qu'est-ce qu'<span class="g-indigo-cyan">EasyColoc</span> ?
           </h2>
           <p style="
                 font-size: 1rem;
@@ -548,11 +552,11 @@
       </section>
 
       <!-- ═══════════════ SLIDE 3 – Personnel ═══════════════ -->
-      <section>
+      <section data-background-color="#0a0a1a">
         <div class="slide-inner">
           <div class="section-label">Fonctionnalité</div>
           <h2 style="font-size: 2.6rem; margin-bottom: 1.3rem">
-            Gestion du <span class="g-text">Personnel</span>
+            Gestion du <span class="g-indigo-cyan">Personnel</span>
           </h2>
           <div class="card-grid cols-3">
             <div class="card fragment fade-up">
@@ -567,7 +571,7 @@
                     justify-content: center;
                     margin-bottom: 0.9rem;
                   ">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--secondary)" stroke-width="2">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2">
                   <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
                   <polyline points="22,6 12,13 2,6" />
                 </svg>
@@ -590,7 +594,7 @@
                     justify-content: center;
                     margin-bottom: 0.9rem;
                   ">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="2">
                   <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
                   <circle cx="9" cy="7" r="4" />
                   <path d="M23 21v-2a4 4 0 00-3-3.87" />
@@ -629,11 +633,11 @@
       </section>
 
       <!-- ═══════════════ SLIDE 4 – Fonctionnalités Avancées ═══════════════ -->
-      <section>
+      <section data-background-color="#080d14">
         <div class="slide-inner">
           <div class="section-label">Capacités Clés</div>
           <h2 style="font-size: 2.6rem; margin-bottom: 1.3rem">
-            Fonctionnalités <span class="g-text">Avancées</span>
+            Fonctionnalités <span class="g-indigo-cyan">Avancées</span>
           </h2>
 
           <div class="feature-row fragment fade-up">
@@ -641,7 +645,7 @@
                   background: rgba(99, 102, 241, 0.15);
                   border: 1px solid rgba(99, 102, 241, 0.25);
                 ">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--secondary)" stroke-width="2">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2">
                 <line x1="18" y1="20" x2="18" y2="10" />
                 <line x1="12" y1="20" x2="12" y2="4" />
                 <line x1="6" y1="20" x2="6" y2="14" />
@@ -662,7 +666,7 @@
                   background: rgba(6, 182, 212, 0.15);
                   border: 1px solid rgba(6, 182, 212, 0.25);
                 ">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="2">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="2">
                 <circle cx="12" cy="12" r="10" />
                 <polyline points="12 6 12 12 16 14" />
               </svg>
@@ -699,11 +703,11 @@
       </section>
 
       <!-- ═══════════════ SLIDE 5 – Stack ═══════════════ -->
-      <section>
+      <section data-background-color="#0a0a1a">
         <div class="slide-inner">
           <div class="section-label">Stack Technologique</div>
           <h2 style="font-size: 2.6rem; margin-bottom: 1.3rem">
-            Technologies <span class="g-text">Utilisées</span>
+            Technologies <span class="g-indigo-cyan">Utilisées</span>
           </h2>
           <div class="card-grid cols-4" style="margin-bottom: 1.1rem">
             <div class="tech-card fragment zoom-in">
@@ -730,7 +734,7 @@
               <span class="t-sub">UI Framework</span>
             </div>
             <div class="tech-card fragment zoom-in">
-              <span class="mono g-text" style="font-size: 1.7rem; font-weight: 700; line-height: 1">SQL</span>
+              <span class="mono g-indigo-cyan" style="font-size: 1.7rem; font-weight: 700; line-height: 1">SQL</span>
               <span class="t-name">MySQL</span>
               <span class="t-sub">Base de Données</span>
             </div>
@@ -744,11 +748,11 @@
       </section>
 
       <!-- ═══════════════ SLIDE 6 – Gestion de Projet ═══════════════ -->
-      <section>
+      <section data-background-color="#080d14">
         <div class="slide-inner">
           <div class="section-label">Organisation</div>
           <h2 style="font-size: 2.6rem; margin-bottom: 1.3rem">
-            Gestion de <span class="g-text">Projet</span>
+            Gestion de <span class="g-indigo-cyan">Projet</span>
           </h2>
           <div class="card-grid cols-2">
             <div class="card border-indigo">
@@ -768,8 +772,7 @@
                       align-items: center;
                       justify-content: center;
                     ">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--secondary)"
-                    stroke-width="2">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2">
                     <rect x="3" y="3" width="7" height="18" />
                     <rect x="14" y="3" width="7" height="11" />
                   </svg>
@@ -852,7 +855,7 @@
       </section>
 
       <!-- ═══════════════ SLIDE 7 – Merci ═══════════════ -->
-      <section>
+      <section data-background-color="#0a0a1a">
         <div class="slide-inner" style="text-align: center">
           <div class="section-label" style="justify-content: center; margin-bottom: 1.3rem">
             Fin de présentation

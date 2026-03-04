@@ -1,919 +1,729 @@
 <!doctype html>
 <html lang="fr">
-
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>EasyColoc – Présentation</title>
-
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/black.min.css" />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
-    rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet"/>
 
   <style>
     :root {
-      --bg: #050510;
-      --bg2: #03070b;
-      --indigo: #6366f1;
-      --cyan: #06b6d4;
-      --emerald: #10b981;
-      --violet: #a855f7;
-      --neon: #00e5a0;
-      --text: #f1f5f9;
-      --muted: #94a3b8;
-      --glass-bg: rgba(255, 255, 255, 0.03);
-      --glass-border: rgba(255, 255, 255, 0.06);
+      --navy:    #0D1B2A;
+      --navy2:   #162336;
+      --blue:    #1A56DB;
+      --blue-lt: #3B82F6;
+      --sky:     #EFF6FF;
+      --white:   #FFFFFF;
+      --off:     #F8FAFC;
+      --slate:   #64748B;
+      --slate-lt:#94A3B8;
+      --border:  #E2E8F0;
+      --text:    #0F172A;
+      --accent:  #1A56DB;
     }
 
-    *,
-    *::before,
-    *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { background: var(--white); height: 100%; }
 
-    html,
-    body {
-      height: 100%;
-      background: var(--bg);
-    }
-
-    .reveal {
-      font-family: "Sora", sans-serif;
-      color: var(--text);
-    }
-
+    .reveal { font-family: 'Montserrat', sans-serif; color: var(--text); background: var(--white); }
     .reveal .slides section {
-      padding: 0;
-      height: 100%;
-      display: flex !important;
-      align-items: center;
-      justify-content: center;
+      padding: 0; height: 100%;
+      display: flex !important; align-items: stretch; justify-content: stretch;
     }
 
-    .reveal h1,
-    .reveal h2,
-    .reveal h3 {
-      font-family: "Sora", sans-serif;
-      text-transform: none;
-      letter-spacing: -0.025em;
-      color: var(--text);
-      line-height: 1.15;
+    .reveal h1, .reveal h2, .reveal h3 {
+      font-family: 'Montserrat', sans-serif;
+      text-transform: none; line-height: 1.1; letter-spacing: -0.02em; color: var(--text);
     }
 
-    .reveal .progress {
-      background: rgba(99, 102, 241, 0.15);
-    }
-
-    .reveal .progress span {
-      background: linear-gradient(to right, var(--indigo), var(--cyan));
-    }
-
-    .reveal .controls {
-      color: var(--indigo);
-    }
-
+    .reveal .progress { background: var(--border); height: 2px; }
+    .reveal .progress span { background: var(--blue); }
+    .reveal .controls { color: var(--blue); }
     .reveal .slide-number {
-      font-family: "JetBrains Mono", monospace;
-      font-size: 11px;
-      color: var(--muted);
-      background: transparent;
+      font-family: 'Montserrat', monospace; font-size: 10px;
+      color: var(--slate-lt); background: transparent; bottom: 16px; right: 20px;
     }
 
-    /* ─── Aura background blobs ─── */
-    .aura {
-      position: fixed;
-      border-radius: 50%;
-      filter: blur(90px);
-      pointer-events: none;
-      z-index: 0;
-      opacity: 0.4;
+    /* Fragments */
+    .reveal .fragment { opacity: 0; transform: translateY(14px); transition: all 0.5s cubic-bezier(0.22, 1, 0.36, 1); }
+    .reveal .fragment.visible { opacity: 1; transform: translateY(0); }
+
+    /* ══ SLIDE WRAPPER ══ */
+    .s { width: 100%; display: flex; align-items: stretch; position: relative; overflow: hidden; }
+
+    /* ══ LEFT ACCENT STRIP (dark slides) ══ */
+    .strip { width: 4px; flex-shrink: 0; background: var(--blue); }
+
+    /* ══ DOT PATTERN bg ══ */
+    .dot-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background-image: radial-gradient(circle, #CBD5E1 1px, transparent 1px);
+      background-size: 28px 28px;
+      opacity: 0.45;
     }
 
-    .aura-tl {
-      width: 420px;
-      height: 420px;
-      background: var(--indigo);
-      top: -120px;
-      left: -120px;
+    /* ══ TYPOGRAPHY ══ */
+    .eyebrow {
+      font-family: 'Montserrat', monospace;
+      font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--blue); margin-bottom: 0.7rem; display: block;
     }
+    .eyebrow-light { color: rgba(147, 197, 253, 0.9); }
 
-    .aura-br {
-      width: 380px;
-      height: 380px;
-      background: var(--cyan);
-      bottom: -100px;
-      right: -100px;
+    .heading-xl {
+      font-family: 'Montserrat', sans-serif;
+      font-size: clamp(3.5rem, 6vw, 5.5rem);
+      font-weight: 800; letter-spacing: -0.03em; line-height: 0.95;
+      color: var(--text);
     }
-
-    .aura-mid {
-      width: 260px;
-      height: 260px;
-      background: var(--emerald);
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      opacity: 0.08;
+    .heading-lg {
+      font-family: 'Montserrat', sans-serif;
+      font-size: clamp(2rem, 3.5vw, 2.8rem);
+      font-weight: 800; letter-spacing: -0.025em; line-height: 1.1;
     }
+    .heading-light { color: #fff; }
 
-    .aura-v {
-      width: 300px;
-      height: 300px;
-      background: var(--violet);
-      top: 20%;
-      right: 15%;
-      opacity: 0.15;
+    .body-text { font-size: 0.93rem; color: var(--slate); line-height: 1.75; font-weight: 400; }
+
+    /* Italic serif accent */
+    .serif-it { font-family: 'Montserrat', sans-serif; font-style: italic; color: var(--blue); }
+
+    /* ══ BADGE / TAG ══ */
+    .badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-family: 'Montserrat', monospace; font-size: 9.5px;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 4px 12px; border-radius: 4px;
+      border: 1px solid var(--border);
+      color: var(--slate); background: var(--off);
     }
+    .badge-blue { color: var(--blue); background: var(--sky); border-color: rgba(26,86,219,0.2); }
+    .badge-dark { color: rgba(191,219,254,0.9); background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.12); }
 
-    /* ─── Stars ─── */
-    .stars {
-      position: fixed;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      pointer-events: none;
-      z-index: 1;
-      overflow: hidden;
-    }
-
-    .star {
-      position: absolute;
-      border-radius: 50%;
-      background: #fff;
-      animation: twinkle var(--dur, 4s) ease-in-out infinite;
-      opacity: 0;
-    }
-
-    @keyframes twinkle {
-
-      0%,
-      100% {
-        opacity: 0;
-        transform: scale(0.8);
-      }
-
-      50% {
-        opacity: var(--op, 0.6);
-        transform: scale(1.1);
-      }
-    }
-
-    /* ─── Slide container ─── */
-    .slide-inner {
-      position: relative;
-      z-index: 2;
-      width: 100%;
-      max-width: 1150px;
-      padding: 2.5rem 3.5rem;
-    }
-
-    /* ─── Section label ─── */
-    .section-label {
-      display: inline-flex;
-      align-items: center;
-      gap: 9px;
-      font-family: "JetBrains Mono", monospace;
-      font-size: 12px;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-      color: var(--cyan);
-      margin-bottom: 0.9rem;
-    }
-
-    .section-label::before {
-      content: "";
-      display: block;
-      width: 28px;
-      height: 2px;
-      background: linear-gradient(to right, var(--indigo), var(--cyan));
-      border-radius: 2px;
-    }
-
-    /* ─── Gradient text ─── */
-    .g-indigo-cyan {
-      background: linear-gradient(135deg, var(--indigo) 0%, var(--cyan) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-
-    /* ─── Glass card ─── */
+    /* ══ CARD ══ */
     .card {
-      padding: 1.8rem 2rem;
-      border-radius: 16px;
-      background: var(--glass-bg);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 1px solid var(--glass-border);
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 10px; padding: 1.6rem 1.8rem;
+      position: relative; overflow: hidden;
+      transition: box-shadow 0.25s ease, transform 0.25s ease;
     }
+    .card:hover { box-shadow: 0 8px 32px rgba(15,23,42,0.08); transform: translateY(-2px); }
+    .card-top { border-top: 2px solid var(--blue); }
+    .card-top-sky { border-top: 2px solid #38BDF8; }
+    .card-top-em  { border-top: 2px solid #10B981; }
 
     .card h3 {
-      font-size: 1.1rem;
-      font-weight: 700;
-      margin-bottom: 0.65rem;
-      background: linear-gradient(135deg, var(--indigo), var(--cyan));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      font-family: 'Montserrat', sans-serif; font-size: 1.1rem;
+      color: var(--text); margin-bottom: 0.5rem; letter-spacing: -0.01em;
     }
+    .card p { font-size: 0.85rem; color: var(--slate); line-height: 1.7; }
 
-    .card {
-      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+    /* ══ ICON BOX ══ */
+    .icon-box {
+      width: 40px; height: 40px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 0.9rem; flex-shrink: 0;
     }
+    .ib-blue  { background: var(--sky); }
+    .ib-sky   { background: #F0F9FF; }
+    .ib-green { background: #F0FDF4; }
 
-    .card:hover {
-      transform: translateY(-5px);
-      border-color: rgba(99, 102, 241, 0.4);
-      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+    /* ══ FEATURE ROW ══ */
+    .feat-row {
+      display: flex; align-items: flex-start; gap: 1rem;
+      padding: 1.1rem 0; border-bottom: 1px solid var(--border);
     }
-
-    .card p {
-      font-size: 0.9rem;
-      color: var(--muted);
-      line-height: 1.7;
+    .feat-row:last-child { border-bottom: none; }
+    .feat-row h3 {
+      font-family: 'Montserrat', sans-serif; font-size: 0.92rem;
+      font-weight: 600; color: var(--text); margin-bottom: 0.2rem;
     }
+    .feat-row p { font-size: 0.82rem; color: var(--slate); line-height: 1.6; }
 
-    /* ─── Card grid ─── */
-    .card-grid {
-      display: grid;
-      gap: 1.2rem;
-    }
-
-    .card-grid.cols-3 {
-      grid-template-columns: repeat(3, 1fr);
-    }
-
-    .card-grid.cols-2 {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-    .card-grid.cols-4 {
-      grid-template-columns: repeat(4, 1fr);
-    }
-
-    /* ─── Feature rows ─── */
-    .feature-row {
-      display: flex;
-      align-items: center;
-      gap: 1.3rem;
-      padding: 1.25rem 1.7rem;
-      margin-bottom: 0.9rem;
-      border-radius: 14px;
-      background: var(--glass-bg);
-      backdrop-filter: blur(20px);
-      border: 1px solid var(--glass-border);
-    }
-
-    .feature-row:last-child {
-      margin-bottom: 0;
-    }
-
-    .feature-row .badge {
-      flex-shrink: 0;
-      width: 52px;
-      height: 52px;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .feature-row h3 {
-      font-size: 1rem;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 0.25rem;
-    }
-
-    .feature-row p {
-      font-size: 0.85rem;
-      color: var(--muted);
-    }
-
-    /* ─── Pill ─── */
-    .pill {
-      display: inline-block;
-      padding: 6px 18px;
-      border-radius: 999px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      letter-spacing: 0.04em;
-      transition: all 0.3s ease;
-    }
-
-    .pill:hover {
-      transform: scale(1.05);
-      filter: brightness(1.2);
-    }
-
-    .pill-indigo {
-      background: rgba(99, 102, 241, 0.12);
-      color: var(--indigo);
-      border: 1px solid rgba(99, 102, 241, 0.28);
-    }
-
-    .pill-cyan {
-      background: rgba(6, 182, 212, 0.12);
-      color: var(--cyan);
-      border: 1px solid rgba(6, 182, 212, 0.28);
-    }
-
-    .pill-em {
-      background: rgba(16, 185, 129, 0.12);
-      color: var(--emerald);
-      border: 1px solid rgba(16, 185, 129, 0.28);
-    }
-
-    /* ─── Tech card ─── */
+    /* ══ TECH CARD ══ */
     .tech-card {
-      background: var(--glass-bg);
-      backdrop-filter: blur(20px);
-      border: 1px solid var(--glass-border);
-      border-radius: 16px;
-      padding: 2.2rem 1.2rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.65rem;
-      text-align: center;
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 8px; padding: 1.4rem 1rem;
+      text-align: center; display: flex; flex-direction: column;
+      align-items: center; gap: 0.5rem;
+      transition: box-shadow 0.2s, transform 0.2s;
     }
+    .tech-card:hover { box-shadow: 0 4px 20px rgba(15,23,42,0.07); transform: translateY(-2px); }
+    .tech-card .t-icon { font-family: 'Montserrat', monospace; font-size: 1.3rem; font-weight: 500; line-height: 1; }
+    .tech-card .t-name { font-size: 0.85rem; font-weight: 600; color: var(--text); }
+    .tech-card .t-sub  { font-size: 0.72rem; color: var(--slate-lt); }
 
-    .tech-card img {
-      height: 36px;
-      object-fit: contain;
-    }
+    /* ══ STAT ══ */
+    .stat-block { padding: 1.4rem 1.6rem; border-radius: 10px; }
+    .stat-block .val { font-family: 'Montserrat', sans-serif; font-size: 2.8rem; line-height: 1; color: var(--white); letter-spacing: -0.03em; }
+    .stat-block .lbl { font-size: 0.8rem; color: rgba(255,255,255,0.6); margin-top: 4px; font-weight: 400; }
 
-    .tech-card .t-name {
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: var(--text);
-    }
+    /* ══ DIVIDER ══ */
+    .div-h { width: 100%; height: 1px; background: var(--border); margin: 1.1rem 0; }
 
-    .tech-card .t-sub {
-      font-size: 0.75rem;
-      color: var(--muted);
-    }
-
-    /* ─── Checklist ─── */
-    .check-list {
-      list-style: none;
-    }
-
-    .check-list li {
-      display: flex;
-      align-items: center;
-      gap: 0.7rem;
-      font-size: 0.9rem;
-      color: var(--muted);
-      padding: 0.4rem 0;
-    }
-
-    .check-list li .ck {
-      width: 22px;
-      height: 22px;
-      border-radius: 6px;
-      background: rgba(16, 185, 129, 0.15);
-      border: 1px solid rgba(16, 185, 129, 0.3);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      font-size: 0.72rem;
-      color: var(--emerald);
-    }
-
-    /* ─── Glow divider ─── */
-    .glow-divider {
-      width: 60px;
-      height: 2px;
-      background: linear-gradient(to right, var(--indigo), var(--cyan));
-      border-radius: 999px;
-      margin: 0.9rem auto;
-      box-shadow: 0 0 10px rgba(99, 102, 241, 0.5);
-    }
-
-    /* ─── Hero title ─── */
-    .hero-title {
-      font-size: clamp(4.5rem, 9vw, 8rem);
-      font-weight: 800;
-      background: linear-gradient(135deg,
-          #ffffff 10%,
-          var(--indigo) 50%,
-          var(--cyan) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-      line-height: 0.95;
-      margin-bottom: 1.2rem;
-      letter-spacing: -0.05em;
-      filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
-    }
-
-    /* ─── CTA button ─── */
-    .cta-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 7px 16px;
-      border-radius: 9px;
-      font-size: 0.72rem;
-      font-weight: 600;
+    /* ══ LINK BTN ══ */
+    .link-btn {
+      display: inline-flex; align-items: center; gap: 5px;
+      font-size: 0.8rem; font-weight: 500; color: var(--blue);
       text-decoration: none;
-      background: linear-gradient(135deg,
-          rgba(99, 102, 241, 0.2),
-          rgba(6, 182, 212, 0.2));
-      border: 1px solid rgba(99, 102, 241, 0.35);
-      color: var(--cyan);
+      border-bottom: 1px solid rgba(26,86,219,0.3);
+      padding-bottom: 1px;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .link-btn:hover { border-color: var(--blue); color: #1240a8; }
+
+    /* ══ CHECKLIST ══ */
+    .cl { list-style: none; }
+    .cl li {
+      display: flex; align-items: flex-start; gap: 0.65rem;
+      font-size: 0.86rem; color: var(--slate); padding: 0.42rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+    .cl li:last-child { border-bottom: none; }
+    .cl-dot {
+      width: 18px; height: 18px; border-radius: 50%;
+      background: var(--sky); display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 1px;
+    }
+    .cl-dot svg { display: block; }
+
+    /* ══ GRID ══ */
+    .g2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .g3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 1rem; }
+    .g4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 1rem; }
+
+    /* ══ MAIN CONTENT AREA ══ */
+    .main { flex: 1; padding: 3rem 3.5rem; display: flex; flex-direction: column; justify-content: center; position: relative; z-index: 2; }
+
+    /* ══ DARK SIDEBAR ══ */
+    .sidebar-dark {
+      width: 240px; flex-shrink: 0;
+      background: var(--navy); display: flex; flex-direction: column;
+      justify-content: space-between; padding: 2.8rem 2rem;
+      position: relative; overflow: hidden;
+    }
+    .sidebar-dark::before {
+      content: '';
+      position: absolute; top: -80px; right: -80px;
+      width: 220px; height: 220px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(26,86,219,0.3) 0%, transparent 70%);
     }
 
-    /* ─── Border accents ─── */
-    .border-indigo {
-      border-top: 2px solid var(--indigo) !important;
+    /* ══ NUMBER WATERMARK ══ */
+    .watermark {
+      position: absolute; right: 2.5rem; bottom: 1.5rem;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 9rem; font-weight: 400; line-height: 1;
+      color: var(--border); user-select: none; z-index: 1;
+      letter-spacing: -0.05em;
     }
 
-    .border-cyan {
-      border-top: 2px solid var(--cyan) !important;
+    /* ══ BLUE GRADIENT SLIDE (hero) ══ */
+    .hero-bg {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--navy2) 50%, #0D2240 100%);
     }
 
-    /* ─── Final thanks ─── */
-    .thanks-text {
-      font-size: clamp(4.5rem, 10vw, 7.5rem);
-      font-weight: 800;
-      letter-spacing: -0.04em;
-      background: linear-gradient(135deg,
-          #fff 30%,
-          var(--indigo) 65%,
-          var(--cyan) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+    /* ══ LOGO mark ══ */
+    .logo-mark {
+      width: 64px; height: 64px; border-radius: 14px;
+      background: linear-gradient(135deg, var(--blue) 0%, #2563EB 100%);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 8px 24px rgba(26,86,219,0.35);
+      flex-shrink: 0;
     }
 
-    /* ─── Fragments ─── */
-    .reveal .fragment {
-      opacity: 0;
-      transform: translateY(20px);
-      transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    /* ══ SUBTLE ANIMATED GRADIENT (hero only) ══ */
+    @keyframes shift { 0%,100%{opacity:.7} 50%{opacity:1} }
+    .glow-orb {
+      position: absolute; border-radius: 50%; filter: blur(80px);
+      pointer-events: none; animation: shift 6s ease-in-out infinite;
     }
 
-    .reveal .fragment.visible {
-      opacity: 1;
-      transform: translateY(0);
+    /* ══════════════════════════════
+       ANIMATIONS
+    ══════════════════════════════ */
+
+    /* Slide-in from left */
+    @keyframes slideInLeft {
+      from { opacity: 0; transform: translateX(-40px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    /* Slide-in from right */
+    @keyframes slideInRight {
+      from { opacity: 0; transform: translateX(40px); }
+      to   { opacity: 1; transform: translateX(0); }
+    }
+    /* Fade up */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    /* Fade in */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    /* Scale in */
+    @keyframes scaleIn {
+      from { opacity: 0; transform: scale(0.88); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+    /* Underline grow */
+    @keyframes lineGrow {
+      from { transform: scaleX(0); }
+      to   { transform: scaleX(1); }
+    }
+    /* Counter shimmer on watermark */
+    @keyframes watermarkFade {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    /* Glow pulse on logo */
+    @keyframes glowPulse {
+      0%, 100% { box-shadow: 0 8px 24px rgba(26,86,219,0.35); }
+      50%       { box-shadow: 0 8px 40px rgba(26,86,219,0.65), 0 0 60px rgba(26,86,219,0.2); }
+    }
+    /* Orb float */
+    @keyframes orbFloat {
+      0%, 100% { transform: translateY(0) translateX(-50%); }
+      50%       { transform: translateY(-20px) translateX(-50%); }
+    }
+    @keyframes orbFloatFree {
+      0%, 100% { transform: translate(0, 0); }
+      50%       { transform: translate(-15px, -15px); }
     }
 
-    /* ─── Mono label ─── */
-    .mono {
-      font-family: "JetBrains Mono", monospace;
+    /* ── Auto-animate classes on slide enter ── */
+    .reveal .slides section.present .anim-left {
+      animation: slideInLeft 0.65s cubic-bezier(0.22,1,0.36,1) both;
     }
+    .reveal .slides section.present .anim-right {
+      animation: slideInRight 0.65s cubic-bezier(0.22,1,0.36,1) both;
+    }
+    .reveal .slides section.present .anim-up {
+      animation: fadeUp 0.65s cubic-bezier(0.22,1,0.36,1) both;
+    }
+    .reveal .slides section.present .anim-fade {
+      animation: fadeIn 0.7s ease both;
+    }
+    .reveal .slides section.present .anim-scale {
+      animation: scaleIn 0.6s cubic-bezier(0.22,1,0.36,1) both;
+    }
+
+    /* Stagger delays */
+    .d1 { animation-delay: 0.05s !important; }
+    .d2 { animation-delay: 0.15s !important; }
+    .d3 { animation-delay: 0.25s !important; }
+    .d4 { animation-delay: 0.35s !important; }
+    .d5 { animation-delay: 0.45s !important; }
+    .d6 { animation-delay: 0.55s !important; }
+    .d7 { animation-delay: 0.65s !important; }
+
+    /* ── Decorative animated line under headings ── */
+    .heading-line {
+      display: block;
+      width: 48px; height: 3px;
+      background: var(--blue);
+      border-radius: 2px;
+      margin: 0.7rem 0 1.1rem;
+      transform-origin: left;
+    }
+    .reveal .slides section.present .heading-line {
+      animation: lineGrow 0.5s cubic-bezier(0.22,1,0.36,1) 0.3s both;
+    }
+
+    /* ── Watermark animated ── */
+    .reveal .slides section.present .watermark {
+      animation: watermarkFade 0.8s cubic-bezier(0.22,1,0.36,1) 0.2s both;
+    }
+
+    /* ── Logo glow pulse ── */
+    .logo-mark {
+      animation: glowPulse 3s ease-in-out infinite !important;
+    }
+
+    /* ── Orbs animated ── */
+    .glow-orb.float1 { animation: orbFloatFree 7s ease-in-out infinite; }
+    .glow-orb.float2 { animation: orbFloatFree 9s ease-in-out 2s infinite; }
+    .glow-orb.float3 { animation: orbFloat 6s ease-in-out infinite; }
+
+    /* ── Card hover lift (enhanced) ── */
+    .card {
+      transition: box-shadow 0.3s ease, transform 0.3s cubic-bezier(0.22,1,0.36,1), border-color 0.3s ease !important;
+    }
+    .card:hover {
+      box-shadow: 0 12px 40px rgba(15,23,42,0.1) !important;
+      transform: translateY(-4px) !important;
+      border-color: rgba(26,86,219,0.25) !important;
+    }
+
+    /* ── Tech card hover ── */
+    .tech-card {
+      transition: box-shadow 0.3s ease, transform 0.3s cubic-bezier(0.22,1,0.36,1) !important;
+    }
+    .tech-card:hover {
+      box-shadow: 0 8px 28px rgba(26,86,219,0.12) !important;
+      transform: translateY(-5px) scale(1.03) !important;
+    }
+
+    /* ── Badge hover ── */
+    .badge { transition: background 0.2s, transform 0.2s; }
+    .badge:hover { transform: scale(1.05); }
+
+    /* ── Feat row hover ── */
+    .feat-row { transition: background 0.2s ease; }
+    .feat-row:hover { background: var(--sky); border-radius: 6px; }
+
+    /* ── Sidebar dark entrance ── */
+    .reveal .slides section.present .sidebar-dark {
+      animation: slideInLeft 0.6s cubic-bezier(0.22,1,0.36,1) both;
+    }
+
+    /* ── Dot bg subtle parallax effect ── */
+    @keyframes dotDrift {
+      0%, 100% { background-position: 0 0; }
+      50%       { background-position: 4px 4px; }
+    }
+    .dot-bg { animation: dotDrift 8s ease-in-out infinite; }
+
+    /* ── Progress bar flash on slide change ── */
+    .reveal .progress span {
+      transition: width 0.4s cubic-bezier(0.22,1,0.36,1) !important;
+    }
+
   </style>
 </head>
-
 <body>
-  <!-- Aura blobs -->
-  <div class="aura aura-tl"></div>
-  <div class="aura aura-br"></div>
-  <div class="aura aura-mid"></div>
-  <div class="aura aura-v"></div>
-  <div class="stars" id="stars"></div>
+<div class="reveal">
+  <div class="slides">
 
-  <div class="reveal">
-    <div class="slides">
-      <!-- ═══════════════ SLIDE 1 – Hero ═══════════════ -->
-      <section data-background-color="#0a0a1a">
-        <div class="slide-inner" style="text-align: center">
-          <div class="section-label" style="justify-content: center; margin-bottom: 1.5rem">
-            Projet Web · 2026
+    <!-- ══════════ SLIDE 1 – HERO ══════════ -->
+    <section data-background-color="#0D1B2A">
+      <div class="s hero-bg" style="align-items:center;justify-content:center;padding:3rem 4rem;position:relative;overflow:hidden">
+
+        <!-- Glow orbs -->
+        <div class="glow-orb float1" style="width:400px;height:400px;background:rgba(26,86,219,0.25);top:-100px;right:-100px"></div>
+        <div class="glow-orb float2" style="width:300px;height:300px;background:rgba(59,130,246,0.15);bottom:-80px;left:100px;animation-delay:3s"></div>
+
+        <div style="width:100%;max-width:1050px;position:relative;z-index:2">
+          <div style="display:flex;align-items:center;gap:1.2rem;margin-bottom:2.5rem">
+            <div class="logo-mark">
+              <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
+                <path d="M6 22V12l9-7 9 7v10" stroke="white" stroke-width="2" stroke-linejoin="round"/>
+                <rect x="11" y="16" width="8" height="6" rx="1" stroke="white" stroke-width="2"/>
+              </svg>
+            </div>
+            <span style="font-family:'Montserrat',sans-serif;font-size:1.3rem;font-weight:600;color:#fff;letter-spacing:-0.02em">EasyColoc</span>
           </div>
-          <h1 class="hero-title">EasyColoc</h1>
-          <p style="
-                font-size: 1.2rem;
-                color: var(--muted);
-                font-weight: 300;
-                margin-bottom: 1.8rem;
-                line-height: 1.6;
-              ">
-            La plateforme de gestion de colocation<br />nouvelle génération
+
+          <span class="eyebrow eyebrow-light anim-fade d1">Projet Web · 2026</span>
+          <h1 class="anim-up d2" style="font-family:'Montserrat',sans-serif;font-size:clamp(3.8rem,7vw,6rem);font-weight:800;color:#fff;letter-spacing:-0.03em;line-height:0.95;margin-bottom:1.5rem">
+            La gestion de<br/>colocation,<br/><em style="color:#93C5FD">simplifiée.</em>
+          </h1>
+          <p class="anim-up d3" style="font-size:1rem;color:rgba(148,163,184,0.9);max-width:480px;line-height:1.75;margin-bottom:2rem;font-weight:300">
+            Une plateforme web complète pour centraliser, automatiser et rendre transparent le quotidien de chaque colocataire.
           </p>
-          <div style="
-                display: flex;
-                gap: 0.7rem;
-                justify-content: center;
-                flex-wrap: wrap;
-              ">
-            <span class="pill pill-indigo">Gestion d'équipe</span>
-            <span class="pill pill-cyan">Suivi Financier</span>
-            <span class="pill pill-em">Laravel 12</span>
+
+          <div class="anim-up d4" style="display:flex;gap:0.6rem;flex-wrap:wrap">
+            <span class="badge badge-dark">Gestion d'équipe</span>
+            <span class="badge badge-dark">Suivi Financier</span>
+            <span class="badge badge-dark">Laravel 12</span>
           </div>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <!-- ═══════════════ SLIDE 2 – Description ═══════════════ -->
-      <section data-background-color="#080d14">
-        <div class="slide-inner">
-          <div class="section-label">Description du Projet</div>
-          <h2 style="font-size: 2.6rem; margin-bottom: 1rem">
-            Qu'est-ce qu'<span class="g-indigo-cyan">EasyColoc</span> ?
+    <!-- ══════════ SLIDE 2 – DESCRIPTION ══════════ -->
+    <section data-background-color="#F8FAFC">
+      <div class="s">
+        <div class="dot-bg"></div>
+
+        <!-- Sidebar -->
+        <div class="sidebar-dark">
+          <div style="position:relative;z-index:2">
+            <div style="width:32px;height:32px;border-radius:8px;background:var(--blue);display:flex;align-items:center;justify-content:center;margin-bottom:2rem">
+              <svg width="16" height="16" viewBox="0 0 30 30" fill="none"><path d="M6 22V12l9-7 9 7v10" stroke="white" stroke-width="2.5" stroke-linejoin="round"/><rect x="11" y="16" width="8" height="6" rx="1" stroke="white" stroke-width="2.5"/></svg>
+            </div>
+            <span style="font-family:'Montserrat',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:rgba(148,163,184,0.7)">Description</span>
+            <div style="width:24px;height:1px;background:rgba(255,255,255,.12);margin:0.8rem 0"></div>
+            <p style="font-size:0.78rem;color:rgba(148,163,184,0.6);line-height:1.7">Comprendre le projet et ses objectifs fondamentaux.</p>
+          </div>
+          <span style="font-family:'Montserrat',sans-serif;font-size:6rem;font-weight:400;color:rgba(255,255,255,0.04);line-height:1;align-self:flex-end">02</span>
+        </div>
+
+        <div class="main">
+          <span class="eyebrow anim-fade d1">Description du Projet</span>
+          <h2 class="heading-lg anim-left d2" style="margin-bottom:0.5rem">
+            Qu'est-ce qu'<span class="serif-it">EasyColoc</span> ?
           </h2>
-          <p style="
-                font-size: 1rem;
-                color: var(--muted);
-                line-height: 1.75;
-                margin-bottom: 1.5rem;
-                max-width: 740px;
-              ">
-            EasyColoc est une solution web conçue pour
-            <strong style="color: var(--text)">centraliser</strong> et
-            <strong style="color: var(--text)">simplifier</strong> le
-            quotidien des colocataires — rendant une gestion souvent
-            complexe en une expérience fluide et transparente.
+          <span class="heading-line"></span>
+          <div class="div-h" style="display:none"></div>
+          <p class="body-text anim-up d3" style="max-width:580px;margin-bottom:1.8rem">
+            EasyColoc est une solution web conçue pour <strong style="color:var(--text);font-weight:600">centraliser</strong> et <strong style="color:var(--text);font-weight:600">simplifier</strong> le quotidien des colocataires — rendant une gestion souvent complexe en une expérience fluide et transparente.
           </p>
-          <div class="card-grid cols-2">
-            <div class="card border-indigo">
+          <div class="g2" style="max-width:780px">
+            <div class="card card-top fragment fade-up">
+              <div class="icon-box ib-blue">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1A56DB" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+              </div>
               <h3>Centralisation</h3>
-              <p>
-                Toutes les informations importantes réunies en un seul
-                endroit, accessible à l'ensemble des colocataires en temps
-                réel.
-              </p>
+              <p>Toutes les informations importantes réunies en un seul endroit, accessible à l'ensemble des colocataires en temps réel.</p>
             </div>
-            <div class="card border-cyan">
+            <div class="card card-top-sky fragment fade-up" data-fragment-index="1">
+              <div class="icon-box ib-sky">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+              </div>
               <h3>Transparence</h3>
-              <p>
-                Équilibre parfait entre les dépenses et les contributions de
-                chaque membre de la colocation.
-              </p>
+              <p>Équilibre parfait entre les dépenses et les contributions de chaque membre de la colocation.</p>
             </div>
           </div>
+          <div class="watermark">02</div>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <!-- ═══════════════ SLIDE 3 – Personnel ═══════════════ -->
-      <section data-background-color="#0a0a1a">
-        <div class="slide-inner">
-          <div class="section-label">Fonctionnalité</div>
-          <h2 style="font-size: 2.6rem; margin-bottom: 1.3rem">
-            Gestion du <span class="g-indigo-cyan">Personnel</span>
+    <!-- ══════════ SLIDE 3 – PERSONNEL ══════════ -->
+    <section data-background-color="#FFFFFF">
+      <div class="s">
+        <div class="main">
+          <span class="eyebrow anim-fade d1">Fonctionnalité</span>
+          <h2 class="heading-lg anim-left d2" style="margin-bottom:0.5rem">
+            Gestion du <span class="serif-it">Personnel</span>
           </h2>
-          <div class="card-grid cols-3">
-            <div class="card fragment fade-up">
-              <div style="
-                    width: 44px;
-                    height: 44px;
-                    border-radius: 11px;
-                    background: rgba(99, 102, 241, 0.15);
-                    border: 1px solid rgba(99, 102, 241, 0.25);
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    margin-bottom: 0.9rem;
-                  ">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2">
-                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-                  <polyline points="22,6 12,13 2,6" />
+          <div class="div-h" style="margin-bottom:1.5rem"></div>
+          <div class="g3" style="max-width:980px">
+            <div class="card card-top fragment fade-up">
+              <div class="icon-box ib-blue">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1A56DB" stroke-width="2">
+                  <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                  <polyline points="22,6 12,13 2,6"/>
                 </svg>
               </div>
+              <span style="font-family:'Montserrat',monospace;font-size:9px;letter-spacing:.12em;color:var(--slate-lt);text-transform:uppercase;margin-bottom:.4rem;display:block">01</span>
               <h3>Système d'Invitation</h3>
-              <p>
-                Envoi d'invitations sécurisées par e-mail avec tokens uniques
-                et expiration automatique.
-              </p>
+              <p>Envoi d'invitations sécurisées par e-mail avec tokens uniques et expiration automatique.</p>
             </div>
-            <div class="card fragment fade-up" data-fragment-index="1">
-              <div style="
-                    width: 44px;
-                    height: 44px;
-                    border-radius: 11px;
-                    background: rgba(6, 182, 212, 0.15);
-                    border: 1px solid rgba(6, 182, 212, 0.25);
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    margin-bottom: 0.9rem;
-                  ">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="2">
-                  <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
-                  <circle cx="9" cy="7" r="4" />
-                  <path d="M23 21v-2a4 4 0 00-3-3.87" />
-                  <path d="M16 3.13a4 4 0 010 7.75" />
+            <div class="card card-top-sky fragment fade-up" data-fragment-index="1">
+              <div class="icon-box ib-sky">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2">
+                  <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
+                  <circle cx="9" cy="7" r="4"/>
+                  <path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/>
                 </svg>
               </div>
+              <span style="font-family:'Montserrat',monospace;font-size:9px;letter-spacing:.12em;color:var(--slate-lt);text-transform:uppercase;margin-bottom:.4rem;display:block">02</span>
               <h3>Rôles Dynamiques</h3>
-              <p>
-                owner, members actifs et administrateurs système avec
-                permissions granulaires.
-              </p>
+              <p>Owner, membres actifs et administrateurs avec permissions granulaires configurables.</p>
             </div>
-            <div class="card fragment fade-up" data-fragment-index="2">
-              <div style="
-                    width: 44px;
-                    height: 44px;
-                    border-radius: 11px;
-                    background: rgba(16, 185, 129, 0.15);
-                    border: 1px solid rgba(16, 185, 129, 0.25);
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    margin-bottom: 0.9rem;
-                  ">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2">
-                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+            <div class="card card-top-em fragment fade-up" data-fragment-index="2">
+              <div class="icon-box ib-green">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
                 </svg>
               </div>
+              <span style="font-family:'Montserrat',monospace;font-size:9px;letter-spacing:.12em;color:var(--slate-lt);text-transform:uppercase;margin-bottom:.4rem;display:block">03</span>
               <h3>Modération Admin</h3>
-              <p>
-                Dashboard de contrôle pour gérer les utilisateurs, les catégories et les bannir si besoin.
-              </p>
+              <p>Dashboard de contrôle pour gérer les utilisateurs, les catégories et modérer si besoin.</p>
             </div>
           </div>
+          <div class="watermark">03</div>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <!-- ═══════════════ SLIDE 4 – Fonctionnalités Avancées ═══════════════ -->
-      <section data-background-color="#080d14">
-        <div class="slide-inner">
-          <div class="section-label">Capacités Clés</div>
-          <h2 style="font-size: 2.6rem; margin-bottom: 1.3rem">
-            Fonctionnalités <span class="g-indigo-cyan">Avancées</span>
-          </h2>
-
-          <div class="feature-row fragment fade-up">
-            <div class="badge" style="
-                  background: rgba(99, 102, 241, 0.15);
-                  border: 1px solid rgba(99, 102, 241, 0.25);
-                ">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2">
-                <line x1="18" y1="20" x2="18" y2="10" />
-                <line x1="12" y1="20" x2="12" y2="4" />
-                <line x1="6" y1="20" x2="6" y2="14" />
-              </svg>
+    <!-- ══════════ SLIDE 4 – FONCTIONNALITÉS ══════════ -->
+    <section data-background-color="#F8FAFC">
+      <div class="s">
+        <div class="dot-bg"></div>
+        <div class="sidebar-dark">
+          <div style="position:relative;z-index:2">
+            <div style="width:32px;height:32px;border-radius:8px;background:var(--blue);display:flex;align-items:center;justify-content:center;margin-bottom:2rem">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
             </div>
-            <div style="flex: 1">
-              <h3>Suivi Intelligent des Dépenses</h3>
-              <p>
-                Catégorisation automatique et visualisation graphique des
-                dépenses par membre et par période.
-              </p>
-            </div>
-            <span class="pill pill-indigo" style="flex-shrink: 0">Analytique</span>
+            <span style="font-family:'Montserrat',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:rgba(148,163,184,0.7)">Capacités</span>
+            <div style="width:24px;height:1px;background:rgba(255,255,255,.12);margin:0.8rem 0"></div>
+            <p style="font-size:0.78rem;color:rgba(148,163,184,0.6);line-height:1.7">Les fonctionnalités clés qui différencient EasyColoc.</p>
           </div>
-
-          <div class="feature-row fragment fade-up">
-            <div class="badge" style="
-                  background: rgba(6, 182, 212, 0.15);
-                  border: 1px solid rgba(6, 182, 212, 0.25);
-                ">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="2">
-                <circle cx="12" cy="12" r="10" />
-                <polyline points="12 6 12 12 16 14" />
-              </svg>
-            </div>
-            <div style="flex: 1">
-              <h3>Règlements Automatisés</h3>
-              <p>
-                Algorithme qui calcule précisément les dettes entre chaque
-                colocataire pour un solde équitable.
-              </p>
-            </div>
-            <span class="pill pill-cyan" style="flex-shrink: 0">Automatique</span>
-          </div>
-
-          <div class="feature-row fragment fade-up">
-            <div class="badge" style="
-                  background: rgba(16, 185, 129, 0.15);
-                  border: 1px solid rgba(16, 185, 129, 0.25);
-                ">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2">
-                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
-              </svg>
-            </div>
-            <div style="flex: 1">
-              <h3>Dashboard interactif</h3>
-              <p>
-                Interface interactive avec statistiques clés pour une vue
-                d'ensemble immédiate et actualisée.
-              </p>
-            </div>
-            <span class="pill pill-em" style="flex-shrink: 0">Live</span>
-          </div>
+          <span style="font-family:'Montserrat',sans-serif;font-size:6rem;font-weight:400;color:rgba(255,255,255,0.04);line-height:1;align-self:flex-end">04</span>
         </div>
-      </section>
 
-      <!-- ═══════════════ SLIDE 5 – Stack ═══════════════ -->
-      <section data-background-color="#0a0a1a">
-        <div class="slide-inner">
-          <div class="section-label">Stack Technologique</div>
-          <h2 style="font-size: 2.6rem; margin-bottom: 1.3rem">
-            Technologies <span class="g-indigo-cyan">Utilisées</span>
-          </h2>
-          <div class="card-grid cols-4" style="margin-bottom: 1.1rem">
-            <div class="tech-card fragment zoom-in">
-              <img
-                src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg"
-                alt="Laravel" />
+        <div class="main">
+          <span class="eyebrow anim-fade d1">Capacités Clés</span>
+          <h2 class="heading-lg anim-left d2" style="margin-bottom:0.5rem">Fonctionnalités <span class="serif-it">Avancées</span></h2>
+          <span class="heading-line"></span>
+          <div class="div-h" style="margin-bottom:0.5rem"></div>
+
+          <div style="background:var(--white);border:1px solid var(--border);border-radius:10px;max-width:820px;overflow:hidden">
+            <div class="feat-row fragment fade-up" style="padding:1.1rem 1.4rem">
+              <div class="icon-box ib-blue" style="margin:0;width:36px;height:36px;border-radius:8px;flex-shrink:0">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#1A56DB" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+              </div>
+              <div style="flex:1">
+                <h3>Suivi Intelligent des Dépenses</h3>
+                <p>Catégorisation automatique et visualisation graphique des dépenses par membre et par période.</p>
+              </div>
+              <span class="badge badge-blue" style="flex-shrink:0;margin-top:2px">Analytique</span>
+            </div>
+            <div class="feat-row fragment fade-up" style="padding:1.1rem 1.4rem">
+              <div class="icon-box ib-sky" style="margin:0;width:36px;height:36px;border-radius:8px;flex-shrink:0">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </div>
+              <div style="flex:1">
+                <h3>Règlements Automatisés</h3>
+                <p>Algorithme qui calcule précisément les dettes entre chaque colocataire pour un solde équitable.</p>
+              </div>
+              <span class="badge" style="flex-shrink:0;margin-top:2px;color:#38BDF8;background:#F0F9FF;border-color:rgba(56,189,248,0.25)">Automatique</span>
+            </div>
+            <div class="feat-row fragment fade-up" style="padding:1.1rem 1.4rem;border-bottom:none">
+              <div class="icon-box ib-green" style="margin:0;width:36px;height:36px;border-radius:8px;flex-shrink:0">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+              </div>
+              <div style="flex:1">
+                <h3>Dashboard Interactif</h3>
+                <p>Interface interactive avec statistiques clés pour une vue d'ensemble immédiate et actualisée.</p>
+              </div>
+              <span class="badge" style="flex-shrink:0;margin-top:2px;color:#10B981;background:#F0FDF4;border-color:rgba(16,185,129,0.25)">Live</span>
+            </div>
+          </div>
+          <div class="watermark">04</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ SLIDE 5 – STACK ══════════ -->
+    <section data-background-color="#FFFFFF">
+      <div class="s">
+        <div class="main">
+          <span class="eyebrow anim-fade d1">Stack Technologique</span>
+          <h2 class="heading-lg anim-left d2" style="margin-bottom:0.5rem">Technologies <span class="serif-it">Utilisées</span></h2>
+          <span class="heading-line"></span>
+          <div class="div-h" style="margin-bottom:1.4rem"></div>
+
+          <div class="g4" style="max-width:860px;margin-bottom:1rem">
+            <div class="tech-card fragment fade-up">
+              <img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" alt="Laravel" style="height:26px;object-fit:contain"/>
               <span class="t-name">Laravel 12</span>
               <span class="t-sub">Backend Framework</span>
             </div>
-            <div class="tech-card fragment zoom-in">
-              <span style="
-                    font-family: &quot;JetBrains Mono&quot;, monospace;
-                    font-size: 1.9rem;
-                    font-weight: 700;
-                    color: #9b59b6;
-                    line-height: 1;
-                  ">PHP</span>
+            <div class="tech-card fragment fade-up" data-fragment-index="1">
+              <span class="t-icon" style="color:#7C3AED;font-family:'Montserrat',monospace">PHP</span>
               <span class="t-name">PHP 8.2</span>
               <span class="t-sub">Langage Serveur</span>
             </div>
-            <div class="tech-card fragment zoom-in">
-              <img src="https://upload.wikimedia.org/wikipedia/commons/d/d5/Tailwind_CSS_Logo.svg" alt="Tailwind" />
+            <div class="tech-card fragment fade-up" data-fragment-index="2">
+              <img src="https://upload.wikimedia.org/wikipedia/commons/d/d5/Tailwind_CSS_Logo.svg" alt="Tailwind" style="height:26px;object-fit:contain"/>
               <span class="t-name">Tailwind CSS</span>
               <span class="t-sub">UI Framework</span>
             </div>
-            <div class="tech-card fragment zoom-in">
-              <span class="mono g-indigo-cyan" style="font-size: 1.7rem; font-weight: 700; line-height: 1">SQL</span>
+            <div class="tech-card fragment fade-up" data-fragment-index="3">
+              <span class="t-icon" style="color:#1A56DB;font-family:'Montserrat',monospace">SQL</span>
               <span class="t-name">MySQL</span>
               <span class="t-sub">Base de Données</span>
             </div>
           </div>
-          <div style="text-align: center">
-            <span class="pill pill-cyan" style="padding: 5px 16px; font-size: 0.72rem">
-              Vite &mdash; compilation ultra-rapide des assets
-            </span>
-          </div>
-        </div>
-      </section>
 
-      <!-- ═══════════════ SLIDE 6 – Gestion de Projet ═══════════════ -->
-      <section data-background-color="#080d14">
-        <div class="slide-inner">
-          <div class="section-label">Organisation</div>
-          <h2 style="font-size: 2.6rem; margin-bottom: 1.3rem">
-            Gestion de <span class="g-indigo-cyan">Projet</span>
-          </h2>
-          <div class="card-grid cols-2">
-            <div class="card border-indigo">
-              <div style="
-                    display: flex;
-                    align-items: center;
-                    gap: 0.9rem;
-                    margin-bottom: 1rem;
-                  ">
-                <div style="
-                      width: 48px;
-                      height: 48px;
-                      border-radius: 12px;
-                      background: rgba(99, 102, 241, 0.15);
-                      border: 1px solid rgba(99, 102, 241, 0.25);
-                      display: flex;
-                      align-items: center;
-                      justify-content: center;
-                    ">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2">
-                    <rect x="3" y="3" width="7" height="18" />
-                    <rect x="14" y="3" width="7" height="11" />
-                  </svg>
-                </div>
-                <h3 style="
-                      font-size: 1.15rem;
-                      color: var(--text);
-                      -webkit-text-fill-color: var(--text);
-                    ">
-                  Trello
-                </h3>
-              </div>
-              <p style="
-                    font-size: 0.88rem;
-                    color: var(--muted);
-                    margin-bottom: 1rem;
-                    line-height: 1.65;
-                  ">
-                Tableau Kanban pour le suivi agile des tâches, du backlog
-                jusqu'à la production.
-              </p>
-              <a href="https://trello.com/b/MfqTZc8S/easycoloc" target="_blank" class="cta-btn">
-                Accéder au Trello
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                  <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6" />
-                  <polyline points="15 3 21 3 21 9" />
-                  <line x1="10" y1="14" x2="21" y2="3" />
-                </svg>
-              </a>
+          <div style="display:inline-flex;align-items:center;gap:0.9rem;background:var(--sky);border:1px solid rgba(26,86,219,0.15);border-radius:8px;padding:0.7rem 1.2rem;max-width:860px">
+            <span style="font-size:1rem;color:var(--blue)">⚡</span>
+            <span style="font-size:0.82rem;color:var(--slate)"><strong style="color:var(--text);font-weight:600">Vite</strong> — compilation ultra-rapide des assets front-end</span>
+          </div>
+          <div class="watermark">05</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ SLIDE 6 – GESTION DE PROJET ══════════ -->
+    <section data-background-color="#F8FAFC">
+      <div class="s">
+        <div class="dot-bg"></div>
+        <div class="sidebar-dark">
+          <div style="position:relative;z-index:2">
+            <div style="width:32px;height:32px;border-radius:8px;background:var(--blue);display:flex;align-items:center;justify-content:center;margin-bottom:2rem">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><rect x="3" y="3" width="7" height="18"/><rect x="14" y="3" width="7" height="11"/></svg>
             </div>
-            <div class="card border-cyan">
-              <div style="
-                    display: flex;
-                    align-items: center;
-                    gap: 0.9rem;
-                    margin-bottom: 1rem;
-                  ">
-                <div style="
-                      width: 48px;
-                      height: 48px;
-                      border-radius: 12px;
-                      background: rgba(6, 182, 212, 0.15);
-                      border: 1px solid rgba(6, 182, 212, 0.25);
-                      display: flex;
-                      align-items: center;
-                      justify-content: center;
-                    ">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="2">
-                    <circle cx="18" cy="18" r="3" />
-                    <circle cx="6" cy="6" r="3" />
-                    <circle cx="6" cy="18" r="3" />
-                    <path d="M6 9v6M15.5 6.5l-9 9" />
-                  </svg>
+            <span style="font-family:'Montserrat',monospace;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:rgba(148,163,184,0.7)">Organisation</span>
+            <div style="width:24px;height:1px;background:rgba(255,255,255,.12);margin:0.8rem 0"></div>
+            <p style="font-size:0.78rem;color:rgba(148,163,184,0.6);line-height:1.7">Méthodologie et outils de collaboration.</p>
+          </div>
+          <span style="font-family:'Montserrat',sans-serif;font-size:6rem;font-weight:400;color:rgba(255,255,255,0.04);line-height:1;align-self:flex-end">06</span>
+        </div>
+
+        <div class="main">
+          <span class="eyebrow anim-fade d1">Organisation</span>
+          <h2 class="heading-lg anim-left d2" style="margin-bottom:0.5rem">Gestion de <span class="serif-it">Projet</span></h2>
+          <span class="heading-line"></span>
+          <div class="div-h" style="margin-bottom:1.4rem"></div>
+
+          <div style="max-width:500px;margin:0 auto">
+            <div class="card card-top-sky fragment fade-up">
+              <div style="display:flex;align-items:center;gap:0.8rem;margin-bottom:1.1rem">
+                <div class="icon-box ib-sky" style="margin:0;width:40px;height:40px">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#38BDF8" stroke-width="2"><circle cx="18" cy="18" r="3"/><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M6 9v6M15.5 6.5l-9 9"/></svg>
                 </div>
-                <h3 style="
-                      font-size: 1.15rem;
-                      color: var(--text);
-                      -webkit-text-fill-color: var(--text);
-                    ">
-                  Git / GitHub
-                </h3>
+                <h3 style="font-family:'Montserrat',sans-serif;font-size:1rem;font-weight:600;letter-spacing:0">Git / GitHub</h3>
               </div>
-              <ul class="check-list">
+              <ul class="cl">
                 <li>
-                  <span class="ck">&#10003;</span> Versioning structuré du
-                  code
+                  <span class="cl-dot"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="#1A56DB" stroke-width="2"><polyline points="2,6 5,9 10,3"/></svg></span>
+                  Versioning structuré du code
                 </li>
                 <li>
-                  <span class="ck">&#10003;</span> Branches par
-                  fonctionnalités
+                  <span class="cl-dot"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="#1A56DB" stroke-width="2"><polyline points="2,6 5,9 10,3"/></svg></span>
+                  Branches par fonctionnalités
                 </li>
                 <li>
-                  <span class="ck">&#10003;</span> Historique complet des
-                  itérations
+                  <span class="cl-dot"><svg width="10" height="10" viewBox="0 0 12 12" fill="none" stroke="#1A56DB" stroke-width="2"><polyline points="2,6 5,9 10,3"/></svg></span>
+                  Historique complet des itérations
                 </li>
               </ul>
             </div>
           </div>
+          <div class="watermark">06</div>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <!-- ═══════════════ SLIDE 7 – Merci ═══════════════ -->
-      <section data-background-color="#0a0a1a">
-        <div class="slide-inner" style="text-align: center">
-          <div class="section-label" style="justify-content: center; margin-bottom: 1.3rem">
-            Fin de présentation
+    <!-- ══════════ SLIDE 7 – MERCI ══════════ -->
+    <section data-background-color="#0D1B2A">
+      <div class="s hero-bg" style="align-items:center;justify-content:center;padding:3rem 4rem;position:relative;overflow:hidden;flex-direction:column;text-align:center">
+
+        <div class="glow-orb float3" style="width:500px;height:500px;background:rgba(26,86,219,0.2);top:-150px;left:50%;transform:translateX(-50%)"></div>
+
+        <div style="position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;gap:1.4rem">
+          <div class="logo-mark" style="width:72px;height:72px;border-radius:16px">
+            <svg width="34" height="34" viewBox="0 0 30 30" fill="none">
+              <path d="M6 22V12l9-7 9 7v10" stroke="white" stroke-width="2" stroke-linejoin="round"/>
+              <rect x="11" y="16" width="8" height="6" rx="1" stroke="white" stroke-width="2"/>
+            </svg>
           </div>
-          <h2 class="thanks-text">Merci !</h2>
-          <div class="glow-divider"></div>
-          <div style="
-                display: flex;
-                gap: 0.6rem;
-                justify-content: center;
-                flex-wrap: wrap;
-              ">
-            <span class="pill pill-indigo">EasyColoc</span>
-            <span class="pill pill-cyan">Laravel 12</span>
-            <span class="pill pill-em">2026</span>
+          <span class="eyebrow eyebrow-light anim-fade d1">Fin de présentation</span>
+          <h2 class="anim-scale d2" style="font-family:'Montserrat',sans-serif;font-size:clamp(3.5rem,7vw,6rem);font-weight:800;color:#fff;letter-spacing:-0.03em;line-height:0.95">
+            Merci <em style="color:#93C5FD">!</em>
+          </h2>
+          <div style="width:40px;height:2px;background:var(--blue);border-radius:2px"></div>
+          <div style="display:flex;gap:0.6rem;flex-wrap:wrap;justify-content:center">
+            <span class="badge badge-dark">EasyColoc</span>
+            <span class="badge badge-dark">Laravel 12</span>
+            <span class="badge badge-dark">2026</span>
           </div>
         </div>
-      </section>
-    </div>
+      </div>
+    </section>
+
   </div>
+</div>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.js"></script>
-  <script>
-    /* ─ Stars ─ */
-    const starsContainer = document.getElementById("stars");
-    const starCount = 140;
-
-    for (let i = 0; i < starCount; i++) {
-      const star = document.createElement("div");
-      star.className = "star";
-      const size = Math.random() * 2 + 1;
-      star.style.width = `${size}px`;
-      star.style.height = `${size}px`;
-      star.style.top = `${Math.random() * 100}%`;
-      star.style.left = `${Math.random() * 100}%`;
-      star.style.setProperty("--dur", `${2 + Math.random() * 4}s`);
-      star.style.setProperty("--op", `${0.2 + Math.random() * 0.7}`);
-      starsContainer.appendChild(star);
-    }
-
-    /* ─ Reveal ─ */
-    Reveal.initialize({
-      hash: true,
-      center: true,
-      transition: "fade",
-      backgroundTransition: "fade",
-      mouseWheel: true,
-      controls: true,
-      progress: true,
-      slideNumber: "c/t",
-      autoAnimate: true,
-      width: 1200,
-      height: 720,
-      margin: 0.05,
-      minScale: 0.2,
-      maxScale: 2.0,
-    });
-  </script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.js"></script>
+<script>
+Reveal.initialize({
+  hash: true, center: false,
+  transition: 'slide', backgroundTransition: 'fade',
+  mouseWheel: true, controls: true, progress: true,
+  slideNumber: 'c/t', autoAnimate: true,
+  width: 1200, height: 720, margin: 0,
+  minScale: 0.2, maxScale: 2.0,
+});
+</script>
 </body>
-
 </html>
